@@ -1,0 +1,129 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# mypy
+.mypy_cache/
+.dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# VS Code
+.vscode/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Flask session and instance folders
+instance/
+.webassets-cache
+
+# Uploaded files
+uploads/
+
+# Google credentials
+*.json
+!requirements*.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Backup files
+*~
+*.bak
+*.tmp
+
+# Static build artifacts
+staticfiles/
+
+# Ignore database files
+*.sqlite3
+*.dbsnappy-analog-464214-i9-657c8d66adba.json
+venv/
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+*.pid
+*.swp
+*.swo
+*.bak
+*.tmp
+*.DS_Store
+*.idea/
+*.vscode/
+*.egg-info/
+*.egg
+*.zip
+*.tar.gz
+*.rar
+*.tar
+*.gz
+*.7z
+*.log
+*.coverage
+*.mypy_cache/
+*.pytest_cache/
+*.tox/
+venv/
+dist/

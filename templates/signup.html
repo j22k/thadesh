@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+    <div style="background: white; padding: 48px; border-radius: 16px; border: 1px solid #e5e7eb; width: 100%; max-width: 400px; text-align: center;">
+        <div style="width: 80px; height: 80px; background: #3b82f6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: bold; margin: 0 auto 24px;">
+            T
+        </div>
+        
+        <h2 style="font-size: 24px; font-weight: 600; color: #1f2937; margin-bottom: 8px;">
+            <span class="text-en">Welcome Back</span>
+            <span class="text-ml" style="display: none;">തിരികെ സ്വാഗതം</span>
+        </h2>
+        
+        <p style="color: #6b7280; margin-bottom: 32px;">
+            <span class="text-en">Sign Up to access your government services</span>
+            <span class="text-ml" style="display: none;">നിങ്ങളുടെ സർക്കാർ സേവനങ്ങൾ ആക്സസ് ചെയ്യാൻ സൈൻ ഇൻ ചെയ്യുക</span>
+        </p>
+        
+        <form style="text-align: left;" action="/auth/sign_up" method="post">
+             <label style="display: block; font-weight: 500; color: #d60311; margin-bottom: 8px;">
+                    <span class="text-en">{{ message }}</span>
+                </label>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px;">
+                    <span class="text-en">Email</span>
+                    <span class="text-ml" style="display: none;">ഇമെയിൽ അല്ലെങ്കിൽ മൊബൈൽ നമ്പർ</span>
+                </label>
+                <input type="text" style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;" 
+                       class="placeholder-en" placeholder="Enter your mobile number"
+                       data-placeholder-en="Enter your email"
+                       data-placeholder-ml="നിങ്ങളുടെ ഇമെയിൽ അല്ലെങ്കിൽ മൊബൈൽ നമ്പർ നൽകുക"
+                       name="email">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px;">
+                    <span class="text-en">mobile number</span>
+                    <span class="text-ml" style="display: none;">ഇമെയിൽ അല്ലെങ്കിൽ മൊബൈൽ നമ്പർ</span>
+                </label>
+                <input type="text" style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;" 
+                       class="placeholder-en" placeholder="Enter your email"
+                       data-placeholder-en="Enter your mobile number"
+                       data-placeholder-ml="നിങ്ങളുടെ ഇമെയിൽ അല്ലെങ്കിൽ മൊബൈൽ നമ്പർ നൽകുക"
+                       name="mobile">
+            </div>
+            
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px;">
+                    <span class="text-en">Password</span>
+                    <span class="text-ml" style="display: none;">പാസ്‌വേഡ്</span>
+                </label>
+                <input type="password" style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;" 
+                       class="placeholder-en" placeholder="Enter your password"
+                       data-placeholder-en="Enter your password"
+                       data-placeholder-ml="നിങ്ങളുടെ പാസ്‌വേഡ് നൽകുക"
+                       name="password">
+            </div>
+            
+            <div style="margin-bottom: 24px;">
+                <label style="display: block; font-weight: 500; color: #374151; margin-bottom: 8px;">
+                    <span class="text-en">Confirm Password</span>
+                    <span class="text-ml" style="display: none;">പാസ്‌വേഡ്</span>
+                </label>
+                <input type="password" style="width: 100%; padding: 12px 16px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; transition: border-color 0.2s;" 
+                       class="placeholder-en" placeholder="Confirm your password"
+                       data-placeholder-en="password"
+                       data-placeholder-ml="നിങ്ങളുടെ പാസ്‌വേഡ് നൽകുക"
+                       name="confirm_password">
+            </div>
+
+            
+            <button type="submit" style="width: 100%; background: #3b82f6; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 16px; cursor: pointer; transition: background-color 0.2s; margin-bottom: 20px;">
+                <span class="text-en">Sign In</span>
+                <span class="text-ml" style="display: none;">സൈൻ ഇൻ</span>
+            </button>
+            
+            <div style="text-align: center;">
+                <p style="color: #6b7280; font-size: 14px;">
+                    <span class="text-en">have an account?</span>
+                    <span class="text-ml" style="display: none;">അക്കൗണ്ട് ഇല്ലേ?</span>
+                    <a href="/login" style="color: #3b82f6; text-decoration: none; font-weight: 500;">
+                        <span class="text-en">Sign in</span>
+                        <span class="text-ml" style="display: none;">സൈൻ അപ്പ്</span>
+                    </a>
+                </p>
+            </div>
+        </form>
+        
+        <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+            <p style="color: #6b7280; font-size: 12px; margin-bottom: 16px;">
+                <span class="text-en">Or continue with</span>
+                <span class="text-ml" style="display: none;">അല്ലെങ്കിൽ ഇതുമായി തുടരുക</span>
+            </p>
+            
+            <div style="display: flex; gap: 12px;">
+                <button style="flex: 1; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; background: white; cursor: pointer; transition: background-color 0.2s;">
+                    <i class="fab fa-google" style="color: #ea4335;"></i>
+                </button>
+                <button style="flex: 1; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; background: white; cursor: pointer; transition: background-color 0.2s;">
+                    <i class="fab fa-facebook" style="color: #1877f2;"></i>
+                </button>
+                <button style="flex: 1; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; background: white; cursor: pointer; transition: background-color 0.2s;">
+                    <i class="fas fa-mobile-alt" style="color: #10b981;"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Login page specific language handling
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Function to update login page language elements
+    function updateLoginLanguage() {
+        const currentLang = window.currentSiteLanguage || 'english';
+        
+        // Update text elements
+        document.querySelectorAll('.text-en').forEach(el => {
+            el.style.display = currentLang === 'english' ? 'inline' : 'none';
+        });
+        
+        document.querySelectorAll('.text-ml').forEach(el => {
+            el.style.display = currentLang === 'malayalam' ? 'inline' : 'none';
+        });
+        
+        // Update input placeholders
+        document.querySelectorAll('.placeholder-en').forEach(el => {
+            const enPlaceholder = el.getAttribute('data-placeholder-en');
+            const mlPlaceholder = el.getAttribute('data-placeholder-ml');
+            
+            if (currentLang === 'english' && enPlaceholder) {
+                el.placeholder = enPlaceholder;
+            } else if (currentLang === 'malayalam' && mlPlaceholder) {
+                el.placeholder = mlPlaceholder;
+            }
+        });
+    }
+    
+    // Initial update
+    updateLoginLanguage();
+    
+    // Listen for language changes
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('#languageToggle, #languageToggleMobile')) {
+            // Wait a bit for the base template to update the language
+            setTimeout(updateLoginLanguage, 100);
+        }
+    });
+    
+    // Also update when the global language variable changes
+    // This is a fallback method
+    let lastLanguage = window.currentSiteLanguage || 'english';
+    setInterval(function() {
+        const currentLang = window.currentSiteLanguage || 'english';
+        if (currentLang !== lastLanguage) {
+            updateLoginLanguage();
+            lastLanguage = currentLang;
+        }
+    }, 250);
+});
+</script>
+{% endblock %}

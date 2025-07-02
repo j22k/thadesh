@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Thadhesh - Your voice, Their Actions{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 12px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #6b7280;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #3b82f6;
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .language-selector:hover {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .language-selector:active {
+            transform: scale(0.98);
+        }
+
+        .main-container {
+            display: flex;
+            height: calc(100vh - 73px);
+        }
+
+        .sidebar {
+            width: 260px;
+            background: white;
+            border-right: 1px solid #e5e7eb;
+            padding: 20px;
+        }
+
+        .new-chat-btn {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            transition: background-color 0.2s;
+        }
+
+        .new-chat-btn:hover {
+            background: #2563eb;
+        }
+
+        .chat-history h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .history-item {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            color: #6b7280;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .history-item:hover {
+            background: #f3f4f6;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: white;
+            padding: 16px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-icon {
+            width: 48px;
+            height: 48px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .profile-info h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: #10b981;
+            margin-top: 2px;
+        }
+
+        .web-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .chat-area {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .chat-input-area {
+            padding: 20px 24px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 24px;
+            padding: 12px 20px;
+            gap: 12px;
+        }
+
+        .chat-input {
+            flex: 1;
+            border: none;
+            background: none;
+            outline: none;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .send-btn {
+            width: 36px;
+            height: 36px;
+            background: #10b981;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .send-btn:hover {
+            background: #059669;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 16px;
+            color: #6b7280;
+            font-size: 12px;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 8px;
+        }
+
+        .footer-links a {
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #3b82f6;
+        }
+
+        .message {
+            margin-bottom: 16px;
+        }
+
+        .assistant-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .message-content {
+            background: white;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            max-width: 70%;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+        }
+
+        .mobile-nav.active {
+            display: block;
+        }
+
+        .mobile-nav a {
+            display: block;
+            padding: 16px 24px;
+            text-decoration: none;
+            color: #6b7280;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .mobile-nav a:hover, .mobile-nav a.active {
+            color: #3b82f6;
+            background: #f8f9fa;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 40;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .main-container {
+                position: relative;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 73px;
+                left: -260px;
+                height: calc(100vh - 73px);
+                transition: left 0.3s ease;
+                z-index: 50;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
+                position: relative;
+            }
+            
+            .nav-menu {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .logo-text h1 {
+                font-size: 18px;
+            }
+            
+            .logo-text p {
+                font-size: 12px;
+            }
+            
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+                margin-right: 10px;
+            }
+            
+            .language-selector {
+                font-size: 12px;
+                gap: 6px;
+            }
+            
+            .chat-area {
+                padding: 16px;
+            }
+            
+            .chat-input-area {
+                padding: 16px;
+            }
+            
+            .chat-header {
+                padding: 12px 16px;
+            }
+            
+            .profile-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            
+            .profile-info h2 {
+                font-size: 16px;
+            }
+            
+            .profile-info p {
+                font-size: 12px;
+            }
+            
+            .web-search-btn {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+            
+            .message-content {
+                max-width: 85%;
+                padding: 12px 16px;
+            }
+            
+            .input-container {
+                padding: 10px 16px;
+            }
+            
+            .footer {
+                padding: 12px;
+                font-size: 11px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 8px 12px;
+            }
+            
+            .logo-text h1 {
+                font-size: 16px;
+            }
+            
+            .logo-text p {
+                display: none;
+            }
+            
+            .logo-icon {
+                width: 32px;
+                height: 32px;
+                margin-right: 8px;
+            }
+            
+            .chat-area {
+                padding: 12px;
+            }
+            
+            .chat-input-area {
+                padding: 12px;
+            }
+            
+            .chat-header {
+                padding: 8px 12px;
+            }
+            
+            .message-content {
+                max-width: 90%;
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            
+            .input-container {
+                padding: 8px 12px;
+                border-radius: 20px;
+            }
+            
+            .chat-input {
+                font-size: 14px;
+            }
+            
+            .send-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+            
+            .mic-button {
+                font-size: 16px;
+            }
+        }
+
+        /* Landscape orientation for mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .sidebar {
+                width: 220px;
+                left: -220px;
+            }
+            
+            .chat-area {
+                padding: 12px;
+            }
+            
+            .main-container {
+                height: calc(100vh - 60px);
+            }
+            
+            .header {
+                padding: 8px 16px;
+            }
+        }
+
+        .desktop-only {
+            display: inline;
+        }
+
+        /* Additional responsive utilities */
+        .mobile-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none;
+            }
+            
+            .mobile-only {
+                display: inline;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <a href="/" class="logo">
+          <div class="logo-icon">T</div>
+          <div class="logo-text">
+            <h1>Thadhesh</h1>
+            <p>Your voice, Their Actions</p>
+          </div>
+        </a>
+      
+        <nav class="nav-menu">
+            <a href="/" {% if request.endpoint == 'home' %}class="active"{% endif %}>
+              <span class="nav-text-en">Home</span>
+              <span class="nav-text-ml" style="display: none;">ഹോം</span>
+            </a>
+            <a href="/login" {% if request.endpoint == 'login' %}class="active"{% endif %}>
+              <span class="nav-text-en">Login</span>
+              <span class="nav-text-ml" style="display: none;">ലോഗിൻ</span>
+            </a>
+            <a href="/chat" {% if request.endpoint == 'chat' %}class="active"{% endif %}>
+              <span class="nav-text-en">Chat</span>
+              <span class="nav-text-ml" style="display: none;">ചാറ്റ്</span>
+            </a>
+            <div class="language-selector" id="languageToggle" tabindex="0" role="button" aria-label="Toggle Language">
+                <i class="fas fa-globe"></i>
+                <span id="currentLanguage">English</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+          </nav>
+      
+        <!-- Mobile Menu Toggle Button -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+      
+        <!-- Mobile Navigation -->
+        <nav class="mobile-nav" id="mobileNav">
+          <a href="/" {% if request.endpoint == 'home' %}class="active"{% endif %}>
+            <span class="nav-text-en">Home</span>
+            <span class="nav-text-ml" style="display: none;">ഹോം</span>
+          </a>
+          <a href="/login" {% if request.endpoint == 'login' %}class="active"{% endif %}>
+            <span class="nav-text-en">Login</span>
+            <span class="nav-text-ml" style="display: none;">ലോഗിൻ</span>
+          </a>
+          <a href="/chat" {% if request.endpoint == 'chat' %}class="active"{% endif %}>
+            <span class="nav-text-en">Chat</span>
+            <span class="nav-text-ml" style="display: none;">ചാറ്റ്</span>
+          </a>
+          <!-- Add language selector to mobile nav as well -->
+          <div class="language-selector" id="languageToggleMobile">
+            <i class="fas fa-globe"></i>
+            <span id="currentLanguageMobile">English</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+        </nav>
+      </header>
+  
+    {% block content %}{% endblock %}
+  
+    <footer class="footer">
+      <p>© 2025 Government of Kerala. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </footer>
+  
+    {% block extra_js %}{% endblock %}
+  
+    <script>
+        let currentSiteLanguage = 'english';
+      
+        // Toggle language function
+        function toggleLanguage(event) {
+          // Prevent default behavior
+          if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          
+          currentSiteLanguage = currentSiteLanguage === 'english' ? 'malayalam' : 'english';
+          updateLanguageDisplay();
+          
+          // Save to localStorage
+          try {
+            localStorage.setItem('thadhesh_language', currentSiteLanguage);
+          } catch (e) {
+            console.error("Error saving language preference:", e);
+          }
+          
+          console.log("Language toggled to:", currentSiteLanguage);
+          return false; // Prevent any bubbling
+        }
+      
+        // Update language display throughout the page
+        function updateLanguageDisplay() {
+          try {
+            // Update language selector labels
+            document.querySelectorAll('#currentLanguage, #currentLanguageMobile').forEach(el => {
+              if (el) el.textContent = currentSiteLanguage === 'english' ? 'English' : 'മലയാളം';
+            });
+      
+            // Toggle language-specific text elements
+            document.querySelectorAll('.nav-text-en').forEach(el => {
+              if (el) el.style.display = currentSiteLanguage === 'english' ? 'inline' : 'none';
+            });
+            
+            document.querySelectorAll('.nav-text-ml').forEach(el => {
+              if (el) el.style.display = currentSiteLanguage === 'malayalam' ? 'inline' : 'none';
+            });
+      
+            // Update other page elements
+            const logoTagline = document.querySelector('.logo-text p');
+            if (logoTagline) {
+              logoTagline.textContent = currentSiteLanguage === 'english'
+                ? 'Your voice, Their Actions'
+                : 'നിങ്ങളുടെ ശബ്ദം, അവരുടെ പ്രവർത്തനങ്ങൾ';
+            }
+      
+            const footerText = document.querySelector('.footer p');
+            if (footerText) {
+              footerText.textContent = currentSiteLanguage === 'english'
+                ? '© 2025 Government of Kerala. All rights reserved.'
+                : '© 2025 കേരള സർക്കാർ. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.';
+            }
+      
+            const footerLinks = document.querySelectorAll('.footer-links a');
+            if (footerLinks.length >= 2) {
+              footerLinks[0].textContent = currentSiteLanguage === 'english' ? 'Privacy Policy' : 'സ്വകാര്യതാ നയം';
+              footerLinks[1].textContent = currentSiteLanguage === 'english' ? 'Terms of Service' : 'സേവന നിബന്ധനകൾ';
+            }
+          } catch (error) {
+            console.error("Error updating language display:", error);
+          }
+        }
+      
+        // Initialize language from localStorage
+        function initializeLanguage() {
+          try {
+            const stored = localStorage.getItem('thadhesh_language');
+            if (stored === 'english' || stored === 'malayalam') {
+              currentSiteLanguage = stored;
+              console.log("Loaded stored language:", currentSiteLanguage);
+            }
+          } catch (e) {
+            console.error("Error loading language preference:", e);
+          }
+          updateLanguageDisplay();
+        }
+      
+        // Toggle mobile menu visibility
+        function toggleMobileMenu() {
+          console.log("Toggle mobile menu called");
+          const mobileNav = document.getElementById('mobileNav');
+          if (mobileNav) {
+            mobileNav.classList.toggle('active');
+            console.log("Mobile menu toggled, active:", mobileNav.classList.contains('active'));
+          } else {
+            console.error("Mobile nav element not found!");
+          }
+        }
+      
+        // Setup event handlers
+        function setupEventHandlers() {
+          // Set up language toggle buttons
+          document.querySelectorAll('#languageToggle, #languageToggleMobile').forEach(el => {
+            if (el) {
+              el.removeEventListener('click', toggleLanguage); // Remove existing to prevent duplicates
+              el.addEventListener('click', toggleLanguage);
+              console.log("Added language toggle handler to:", el.id);
+            }
+          });
+          
+          // Set up mobile menu toggle button
+          const menuToggleBtn = document.querySelector('.mobile-menu-toggle');
+          if (menuToggleBtn) {
+            menuToggleBtn.removeEventListener('click', toggleMobileMenu);
+            menuToggleBtn.addEventListener('click', toggleMobileMenu);
+            console.log("Added mobile menu toggle handler");
+          } else {
+            console.error("Mobile menu toggle button not found!");
+          }
+        }
+      
+        // Main initialization function
+        function initApp() {
+          console.log("Initializing app...");
+          initializeLanguage();
+          setupEventHandlers();
+          
+          // Additional debugging
+          console.log("Mobile nav exists:", !!document.getElementById('mobileNav'));
+          console.log("Language toggle exists:", !!document.getElementById('languageToggle'));
+        }
+      
+        // Initialize when DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+        
+        // Fallback initialization
+        if (document.readyState !== 'loading') {
+          console.log("Document already loaded, initializing immediately");
+          initApp();
+        }
+        // Replace the updateLanguageDisplay function in your base.html script with this improved version
+
+function updateLanguageDisplay() {
+    try {
+        // Update language selector labels
+        document.querySelectorAll('#currentLanguage, #currentLanguageMobile').forEach(el => {
+            if (el) el.textContent = currentSiteLanguage === 'english' ? 'English' : 'മലയാളം';
+        });
+
+        // Toggle navigation language-specific text elements
+        document.querySelectorAll('.nav-text-en').forEach(el => {
+            if (el) el.style.display = currentSiteLanguage === 'english' ? 'inline' : 'none';
+        });
+        
+        document.querySelectorAll('.nav-text-ml').forEach(el => {
+            if (el) el.style.display = currentSiteLanguage === 'malayalam' ? 'inline' : 'none';
+        });
+
+        // Toggle general content language-specific text elements
+        document.querySelectorAll('.text-en').forEach(el => {
+            if (el) el.style.display = currentSiteLanguage === 'english' ? 'inline' : 'none';
+        });
+        
+        document.querySelectorAll('.text-ml').forEach(el => {
+            if (el) el.style.display = currentSiteLanguage === 'malayalam' ? 'inline' : 'none';
+        });
+
+        // Update input placeholders
+        document.querySelectorAll('input[data-placeholder-en]').forEach(el => {
+            const enPlaceholder = el.getAttribute('data-placeholder-en');
+            const mlPlaceholder = el.getAttribute('data-placeholder-ml');
+            
+            if (currentSiteLanguage === 'english' && enPlaceholder) {
+                el.placeholder = enPlaceholder;
+            } else if (currentSiteLanguage === 'malayalam' && mlPlaceholder) {
+                el.placeholder = mlPlaceholder;
+            }
+        });
+
+        // Update other page elements (existing code)
+        const logoTagline = document.querySelector('.logo-text p');
+        if (logoTagline) {
+            logoTagline.textContent = currentSiteLanguage === 'english'
+                ? 'Your voice, Their Actions'
+                : 'നിങ്ങളുടെ ശബ്ദം, അവരുടെ പ്രവർത്തനങ്ങൾ';
+        }
+
+        const footerText = document.querySelector('.footer p');
+        if (footerText) {
+            footerText.textContent = currentSiteLanguage === 'english'
+                ? '© 2025 Government of Kerala. All rights reserved.'
+                : '© 2025 കേരള സർക്കാർ. എല്ലാ അവകാശങ്ങളും സംരക്ഷിതം.';
+        }
+
+        const footerLinks = document.querySelectorAll('.footer-links a');
+        if (footerLinks.length >= 2) {
+            footerLinks[0].textContent = currentSiteLanguage === 'english' ? 'Privacy Policy' : 'സ്വകാര്യതാ നയം';
+            footerLinks[1].textContent = currentSiteLanguage === 'english' ? 'Terms of Service' : 'സേവന നിബന്ധനകൾ';
+        }
+
+        console.log('Language display updated to:', currentSiteLanguage);
+    } catch (error) {
+        console.error("Error updating language display:", error);
+    }
+}
+    </script>
+  </body>
+  </html>
+  

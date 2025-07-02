@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin-container">
+    <h2 class="admin-title">Admin Log</h2>
+    <div class="admin-section">
+        <h3>Users</h3>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Mobile</th>
+                        <th>Created At</th>
+                        <th>Last Login</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user._id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.mobile }}</td>
+                        <td>{{ user.created_at }}</td>
+                        <td>{{ user.last_login }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="admin-section">
+        <h3>Chat History</h3>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Session ID</th>
+                        <th>Type</th>
+                        <th>Message</th>
+                        <th>Language</th>
+                        <th>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for chat in chat_logs %}
+                    <tr>
+                        <td>{{ chat.user_id }}</td>
+                        <td>{{ chat.session_id }}</td>
+                        <td>{{ chat.message_type }}</td>
+                        <td>{{ chat.message }}</td>
+                        <td>{{ chat.language }}</td>
+                        <td>{{ chat.timestamp }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="admin-section">
+        <h3>Audio Logs</h3>
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Session ID</th>
+                        <th>Transcript</th>
+                        <th>Language</th>
+                        <th>Status</th>
+                        <th>Timestamp</th>
+                        <th>Audio File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for log in audio_logs %}
+                    <tr>
+                        <td>{{ log.user_id }}</td>
+                        <td>{{ log.session_id }}</td>
+                        <td>{{ log.transcript }}</td>
+                        <td>{{ log.language }}</td>
+                        <td>{{ log.processing_status }}</td>
+                        <td>{{ log.timestamp }}</td>
+                        <td>{% if log.audio_file_path %}<a href="/{{ log.audio_file_path }}" target="_blank">Play</a>{% endif %}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<style>
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 8px;
+}
+.admin-title {
+    text-align: center;
+    margin-bottom: 32px;
+    color: #1e293b;
+}
+.admin-section {
+    margin-bottom: 40px;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 15px;
+}
+.admin-table th, .admin-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    word-break: break-word;
+}
+.admin-table th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: 600;
+}
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+.table-responsive {
+    overflow-x: auto;
+}
+@media (max-width: 900px) {
+    .admin-container {
+        padding: 12px 2px;
+    }
+    .admin-title {
+        font-size: 22px;
+    }
+    .admin-table th, .admin-table td {
+        font-size: 13px;
+        padding: 7px 4px;
+    }
+}
+@media (max-width: 600px) {
+    .admin-title {
+        font-size: 18px;
+    }
+    .admin-section h3 {
+        font-size: 15px;
+    }
+    .admin-table th, .admin-table td {
+        font-size: 11px;
+        padding: 5px 2px;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% block extra_css %}
+<!-- Link to the external CSS file -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+{% block content %}
+<div class="home-container">
+    <div class="hero-section">
+        <div class="logo-large">T</div>
+        
+        <h1 class="hero-title" id="heroTitle">Thadhesh</h1>
+        
+        <p class="hero-subtitle" id="heroSubtitle">Your voice, Their Actions</p>
+        
+        <p class="hero-description" id="heroDescription">
+            Your AI-powered assistant for Kerala Local Self-Government Department services. Get instant help with 
+            building permits, property tax, panchayat services, municipality procedures, and compliance with 
+            Kerala Building Rules - all based on official legal documents and acts.
+        </p>
+        
+        <div class="hero-buttons">
+            <a href="/chat" class="btn-primary" id="getStartedBtn">
+                <i class="fas fa-comment-dots"></i>
+                <span>Get Started</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="#" class="btn-secondary" id="demoBtn">
+                <i class="fas fa-play"></i>
+                <span>Watch Demo Video</span>
+            </a>
+            <a href="/login" class="btn-tertiary" id="loginBtn">
+                <i class="fas fa-user"></i>
+                <span>Login</span>
+            </a>
+        </div>
+        
+        <div class="services-section">
+            <h3 class="services-title" id="servicesTitle">Popular Services</h3>
+            
+            <div class="services-grid" id="servicesGrid">
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Building permit application process" data-ml="കെട്ടിടനിർമ്മാണ അനുമതി അപേക്ഷാ പ്രക്രിയ">Building permit application process</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Property tax payment procedures" data-ml="സ്വത്ത് നികുതി അടയ്ക്കൽ നടപടിക്രമങ്ങൾ">Property tax payment procedures</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Panchayat tax assessment queries" data-ml="പഞ്ചായത്ത് നികുതി നിർണ്ണയ ചോദ്യങ്ങൾ">Panchayat tax assessment queries</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Municipality building rules compliance" data-ml="മുനിസിപ്പാലിറ്റി കെട്ടിട നിയമ അനുസരണം">Municipality building rules compliance</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Zoning regulations and approvals" data-ml="സോണിംഗ് നിയന്ത്രണങ്ങളും അനുമതികളും">Zoning regulations and approvals</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Construction permit documentation" data-ml="നിർമ്മാണ അനുമതി ഡോക്യുമെന്റേഷൻ">Construction permit documentation</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Local governance procedures" data-ml="പ്രാദേശിക ഭരണ നടപടിക്രമങ്ങൾ">Local governance procedures</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+                <div class="service-card" onclick="window.location.href='/chat'">
+                    <p class="service-text" data-en="Building plan approval status" data-ml="കെട്ടിട പ്ലാൻ അനുമതി നില">Building plan approval status</p>
+                    <i class="fas fa-arrow-right service-arrow"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Language content for home page
+const homePageContent = {
+    english: {
+        heroSubtitle: "Your voice, Their Actions",
+        heroDescription: "Your AI-powered assistant for Kerala Local Self-Government Department services. Get instant help with building permits, property tax, panchayat services, municipality procedures, and compliance with Kerala Building Rules - all based on official legal documents and acts.",
+        getStartedBtn: "Get Started",
+        demoBtn: "Watch Demo Video",
+        loginBtn: "Login",
+        servicesTitle: "Popular Services"
+    },
+    malayalam: {
+        heroSubtitle: "നിങ്ങളുടെ ശബ്ദം, അവരുടെ പ്രവർത്തനങ്ങൾ",
+        heroDescription: "കേരള ലോക്കൽ സെൽഫ് ഗവൺമെന്റ് ഡിപ്പാർട്ട്‌മെന്റ് സേവനങ്ങൾക്കുള്ള നിങ്ങളുടെ AI-അധിഷ്ഠിത സഹായി. കെട്ടിട അനുമതികൾ, സ്വത്ത് നികുതി, പഞ്ചായത്ത് സേവനങ്ങൾ, മുനിസിപ്പാലിറ്റി നടപടിക്രമങ്ങൾ, കേരള ബിൽഡിംഗ് റൂൾസ് അനുസരണം എന്നിവയിൽ തൽക്ഷണ സഹായം നേടുക - എല്ലാം ഔദ്യോഗിക നിയമ രേഖകളെയും നിയമങ്ങളെയും അടിസ്ഥാനമാക്കി.",
+        getStartedBtn: "ആരംഭിക്കുക",
+        demoBtn: "ഡെമോ വീഡിയോ കാണുക",
+        loginBtn: "ലോഗിൻ",
+        servicesTitle: "ജനപ്രിയ സേവനങ്ങൾ"
+    }
+};
+
+// Function to update home page content based on language
+function updateHomePageLanguage(language = 'english') {
+    console.log('🏠 Updating home page language to:', language);
+    
+    const content = homePageContent[language];
+    if (!content) {
+        console.error('❌ Language content not found for:', language);
+        return;
+    }
+    
+    try {
+        // Update hero section
+        const heroSubtitle = document.getElementById('heroSubtitle');
+        const heroDescription = document.getElementById('heroDescription');
+        const servicesTitle = document.getElementById('servicesTitle');
+        
+        if (heroSubtitle) {
+            heroSubtitle.textContent = content.heroSubtitle;
+            console.log('✅ Updated hero subtitle');
+        }
+        
+        if (heroDescription) {
+            heroDescription.textContent = content.heroDescription;
+            console.log('✅ Updated hero description');
+        }
+        
+        if (servicesTitle) {
+            servicesTitle.textContent = content.servicesTitle;
+            console.log('✅ Updated services title');
+        }
+        
+        // Update buttons
+        const getStartedBtn = document.querySelector('#getStartedBtn span');
+        const demoBtn = document.querySelector('#demoBtn span');
+        const loginBtn = document.querySelector('#loginBtn span');
+        
+        if (getStartedBtn) {
+            getStartedBtn.textContent = content.getStartedBtn;
+            console.log('✅ Updated get started button');
+        }
+        
+        if (demoBtn) {
+            demoBtn.textContent = content.demoBtn;
+            console.log('✅ Updated demo button');
+        }
+        
+        if (loginBtn) {
+            loginBtn.textContent = content.loginBtn;
+            console.log('✅ Updated login button');
+        }
+        
+        // Update service cards using data attributes
+        const serviceTexts = document.querySelectorAll('.service-text');
+        console.log('🔄 Found', serviceTexts.length, 'service cards to update');
+        
+        serviceTexts.forEach((element, index) => {
+            const englishText = element.getAttribute('data-en');
+            const malayalamText = element.getAttribute('data-ml');
+            
+            if (language === 'malayalam' && malayalamText) {
+                element.textContent = malayalamText;
+                console.log(`✅ Updated service card ${index + 1} to Malayalam`);
+            } else if (englishText) {
+                element.textContent = englishText;
+                console.log(`✅ Updated service card ${index + 1} to English`);
+            }
+        });
+        
+        console.log('🎉 Home page language update completed successfully');
+        
+    } catch (error) {
+        console.error('❌ Error updating home page language:', error);
+    }
+}
+
+// Function to get current language from base template
+function getCurrentLanguage() {
+    // Try multiple ways to get the current language
+    if (typeof window.currentSiteLanguage !== 'undefined') {
+        return window.currentSiteLanguage;
+    }
+    
+    try {
+        const stored = localStorage.getItem('thadhesh_language');
+        if (stored) return stored;
+    } catch (e) {
+        console.warn('Could not access localStorage');
+    }
+    
+    return 'english'; // default fallback
+}
+
+// Enhanced language monitoring
+function startLanguageMonitoring() {
+    let lastLanguage = getCurrentLanguage();
+    console.log('🔍 Starting language monitoring, initial language:', lastLanguage);
+    
+    // Update immediately
+    updateHomePageLanguage(lastLanguage);
+    
+    // Monitor for changes every 200ms
+    const monitorInterval = setInterval(() => {
+        const currentLang = getCurrentLanguage();
+        
+        if (currentLang !== lastLanguage) {
+            console.log('🔄 Language change detected:', lastLanguage, '->', currentLang);
+            updateHomePageLanguage(currentLang);
+            lastLanguage = currentLang;
+        }
+    }, 200);
+    
+    // Listen for clicks on language toggle
+    document.addEventListener('click', function(e) {
+        const clickedToggle = e.target.closest('#languageToggle, #mobileLanguageToggle');
+        if (clickedToggle) {
+            console.log('🖱️ Language toggle clicked on homepage');
+            
+            // Wait a bit for base template to update, then check language
+            setTimeout(() => {
+                const newLang = getCurrentLanguage();
+                console.log('🔄 Post-click language check:', newLang);
+                updateHomePageLanguage(newLang);
+            }, 300);
+        }
+    });
+}
+
+// Debug functions for testing
+window.testLanguageToggle = function() {
+    console.log('🧪 Testing language toggle...');
+    const currentLang = getCurrentLanguage();
+    const newLang = currentLang === 'english' ? 'malayalam' : 'english';
+    console.log('🔄 Manually switching from', currentLang, 'to', newLang);
+    updateHomePageLanguage(newLang);
+};
+
+window.forceLanguageUpdate = function(lang = 'malayalam') {
+    console.log('🔧 Force updating to:', lang);
+    updateHomePageLanguage(lang);
+};
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🏠 Homepage DOM loaded, initializing language system...');
+    
+    // Wait a moment for base template to initialize
+    setTimeout(() => {
+        startLanguageMonitoring();
+    }, 500);
+});
+
+// Also try to initialize immediately if DOM is already loaded
+if (document.readyState !== 'loading') {
+    console.log('🏠 DOM already loaded, initializing immediately...');
+    setTimeout(startLanguageMonitoring, 100);
+}
+</script>
+{% endblock %}
