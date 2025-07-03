@@ -24,7 +24,7 @@
             
             <div class="history-items">
                 {% for service in services %}
-                <div class="history-item" onclick="loadChat('{{ service }}')">
+                <div class="history-item" onclick="sendSuggestion('{{ service }}')">
                     <span>{{ service }}</span>
                     <i class="fas fa-external-link-alt"></i>
                 </div>
@@ -561,6 +561,13 @@
                 'Sorry, I encountered an error. Please try again.';
             addMessageToChat(errorMsg, 'assistant');
         });
+    }
+
+    // Send a prebuilt suggestion to the server as a chat message
+    function sendSuggestion(suggestion) {
+        const input = document.getElementById('messageInput');
+        input.value = suggestion;
+        sendMessage();
     }
 
     function addMessageToChat(message, sender, timestamp = null, sourceRef = null) {
