@@ -1,7 +1,9 @@
 from flask import Blueprint, request, jsonify, session, current_app
 from utils import (require_login, allowed_file, generate_secure_filename, 
                    save_uploaded_file, get_response_message, format_timestamp,
-                   validate_audio_data, process_base64_audio, transcribe_audio)
+                   validate_audio_data, process_base64_audio, transcribe_audio,
+                   translate_malayalam_to_english,translate_english_to_malayalam)
+from RAG_engine import ask_kerala_panchayat
 from models import SessionModel, ChatModel, AudioModel
 from database import check_db_connection
 
@@ -14,34 +16,56 @@ def chat_api():
     data = request.get_json()
     if not data:
         return jsonify({'error': 'No data provided'}), 400
-    
+
     user_message = data.get('message', '')
     language = data.get('language', 'english')
-    
+
     if not user_message.strip():
         return jsonify({'error': 'Message cannot be empty'}), 400
-    
+
     print(f"[CHAT API] User message: {user_message}, Language: {language}")
-    
+
+    # Always work in English for the RAG engine
+    if language == 'malayalam':
+        text = translate_malayalam_to_english(user_message)
+        if text is None:
+            return jsonify({'error': 'Translation failed. Please try again.'}), 500
+        user_message_en = text
+    else:
+        user_message_en = user_message
+
     session_id = session.get('session_id')
     user_id = session.get('user_id')
-    
+
     # Update session activity
     SessionModel.update_session_activity(session_id)
-    
-    # Generate response
-    response_message = get_response_message(user_message, language)
-    
+
+    # Generate response from RAG engine using English message
+    get_response_message = ask_kerala_panchayat(user_message_en)
+    if get_response_message is None:
+        return jsonify({'error': 'Failed to get response from RAG engine'}), 500
+
+    print(f"\n\n[CHAT API] Response from RAG engine: {get_response_message['answer']}\n\n")
+
+    if language == 'malayalam':
+        response_message = translate_english_to_malayalam(get_response_message['answer'])
+        if response_message is None:
+            return jsonify({'error': 'Translation failed. Please try again.'}), 500
+    else:
+        response_message = get_response_message['answer']
+
+    print(f"\n\n[CHAT API] Response message: {response_message}\n\n")
+
     response = {
         'message': response_message,
         'timestamp': format_timestamp(),
-        'source_reference': 'Kerala Building Rules, Panchayath Raj Act, Municipality Act'
+        'source_reference': get_response_message['sources']
     }
-    
+
     # Save chat messages to database
     ChatModel.save_message(session_id, user_id, user_message, 'user', language=language)
     ChatModel.save_message(session_id, user_id, response_message, 'assistant', language=language)
-    
+
     return jsonify(response)
 
 @api_bp.route('/upload_audio', methods=['POST'])
@@ -68,14 +92,12 @@ def upload_audio():
             audio_bytes, ext = process_base64_audio(audio_data)
             filename = generate_secure_filename(session_id, ext)
             file_path = save_uploaded_file(audio_bytes, filename)
-            # Transcribe audio
-            transcription = transcribe_audio(file_path)
-            # Save audio log
+            # Do not transcribe audio, just log the provided transcript (from client)
             audio_log_id = AudioModel.log_interaction(
                 session_id=session_id,
                 user_id=user_id,
                 audio_file_path=file_path,
-                transcript=transcription or transcript,
+                transcript=transcript,
                 language=language
             )
             return jsonify({
@@ -83,7 +105,7 @@ def upload_audio():
                 'message': 'Audio uploaded successfully',
                 'audio_log_id': audio_log_id,
                 'file_path': file_path,
-                'transcription': transcription
+                'transcription': transcript
             })
         except Exception as e:
             return jsonify({'success': False, 'message': f'Error processing audio: {str(e)}'}), 500
@@ -95,12 +117,12 @@ def upload_audio():
         if file and file.filename and allowed_file(file.filename):
             filename = generate_secure_filename(session_id, file.filename.split('.')[-1])
             file_path = save_uploaded_file(file.read(), filename)
-            transcription = transcribe_audio(file_path)
+            # Do not transcribe audio, just log the provided transcript (from client)
             audio_log_id = AudioModel.log_interaction(
                 session_id=session_id,
                 user_id=user_id,
                 audio_file_path=file_path,
-                transcript=transcription or transcript,
+                transcript=transcript,
                 language=language
             )
             return jsonify({
@@ -108,7 +130,7 @@ def upload_audio():
                 'message': 'Audio file uploaded successfully',
                 'audio_log_id': audio_log_id,
                 'file_path': file_path,
-                'transcription': transcription
+                'transcription': transcript
             })
         else:
             return jsonify({'success': False, 'message': 'Invalid file type. Please upload a valid audio file.'}), 400

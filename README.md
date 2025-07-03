@@ -11,7 +11,32 @@ Thadhesh is an AI-powered assistant for the Kerala Local Self-Government Departm
 ## Requirements
 - Python 3.10+
 - pip (Python package manager)
+- MongoDB (for chat and audio logs)
 - Google Cloud credentials (for speech-to-text, if used)
+3. **Install and start MongoDB**
+
+You must have MongoDB installed and running locally (default: `mongodb://localhost:27017`).
+
+**On Windows:**
+
+- Download MongoDB Community Server from: https://www.mongodb.com/try/download/community
+- Install and follow the prompts.
+- Start MongoDB as a Windows service (default) or run:
+
+```sh
+"C:\Program Files\MongoDB\Server\<version>\bin\mongod.exe"
+```
+
+**On macOS/Linux:**
+
+- Follow the instructions at: https://docs.mongodb.com/manual/installation/
+- Start MongoDB with:
+
+```sh
+mongod
+```
+
+Make sure MongoDB is running before you start the app.
 
 ## Setup Instructions
 
@@ -56,15 +81,27 @@ set FLASK_APP=app.py
 set FLASK_ENV=development
 ```
 
-4. **Run the application**
+
+4. **(Required) Preprocess Knowledge Base**
+
+Before running the app for the first time, you must preprocess the knowledge base:
+
+```sh
+python ingest_pdf.py
+```
+
+This step prepares the data for the RAG engine and must be done whenever you update the PDF or knowledge sources.
+
+5. **Run the application**
 
 ```sh
 python app.py
 ```
 
+
 The app will start on `http://127.0.0.1:5000/` by default.
 
-5. **Access the app**
+6. **Access the app**
 
 - Open your browser and go to `http://127.0.0.1:5000/`
 - Log in or sign up to start using the chat and audio features.

@@ -10,6 +10,8 @@ from flask import session, redirect, url_for, current_app
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from google.cloud import speech
+from sarvamai import SarvamAI
+
 
 # --- Setup GCP Credentials and Environment ---
 # Load environment variables from .env file
@@ -24,6 +26,35 @@ else:
     print("WARNING: GOOGLE_APPLICATION_CREDENTIALS path not found or not set in .env file.")
 # ---------------------------------------------
 
+def _chunk_text(text: str, max_length: int = 1000) -> list[str]:
+    """
+    Splits a given text into chunks of a specified maximum length,
+    attempting to break at word boundaries if possible.
+
+    Args:
+        text: The input string to be chunked.
+        max_length: The maximum length of each chunk.
+
+    Returns:
+        A list of text chunks.
+    """
+    chunks = []
+    current_text = text
+    while len(current_text) > max_length:
+        # Find the last space within the max_length to avoid breaking words
+        split_index = current_text.rfind(' ', 0, max_length)
+        if split_index == -1: # No space found, force split at max_length
+            split_index = max_length
+        
+        chunk = current_text[:split_index].strip()
+        if chunk: # Add chunk if not empty after stripping
+            chunks.append(chunk)
+        current_text = current_text[split_index:].lstrip() # Remove leading spaces from next chunk
+
+    if current_text.strip(): # Add any remaining text as the last chunk
+        chunks.append(current_text.strip())
+    
+    return chunks
 
 # --- Placeholder functions from original context ---
 # (These are required for the API blueprint to work)
@@ -191,3 +222,120 @@ def transcribe_audio(file_path, language='ml-IN'):
         # Clean up the temporary FLAC file
         if os.path.exists(flac_path):
             os.remove(flac_path)
+            
+
+
+def translate_malayalam_to_english(malayalam_text: str) -> str | None:
+    """
+    Translates Malayalam text to English using the Sarvam AI Text Translation API.
+
+    The Sarvam AI API key is loaded from a .env file (SARVAM_API_KEY).
+
+    Args:
+        malayalam_text: The input text in Malayalam to be translated.
+
+    Returns:
+        The translated text in English as a string, or None if an error occurs.
+    """
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Get the Sarvam AI API key from environment variables
+    sarvam_api_key = os.getenv("SARVAM_API_KEY")
+
+    if not sarvam_api_key:
+        print("Error: SARVAM_API_KEY not found in .env file or environment variables.")
+        return None
+
+    if not malayalam_text.strip():
+        print("Warning: Input Malayalam text is empty. Returning empty string.")
+        return ""
+
+    try:
+        # Initialize the SarvamAI client with your API key
+        client = SarvamAI(api_subscription_key=sarvam_api_key)
+
+        # Call the text translation API
+        # source_language_code="ml-IN" for Malayalam (India)
+        # target_language_code="en-IN" for English (India)
+        # You can specify a 'model' here if you have a preference, e.g., model="sarvam-translate:v1"
+        response = client.text.translate(
+            input=malayalam_text,
+            source_language_code="ml-IN",
+            target_language_code="en-IN",
+            # model="sarvam-translate:v1" # Uncomment if you want to specify a model
+        )
+        # The translated text is typically in a 'translatedText' attribute of the response object.
+        # Refer to Sarvam AI's documentation for the exact response structure if this doesn't work.
+        if hasattr(response, 'translated_text'):
+            return response.translated_text
+        else:
+            print(f"Error: Unexpected response structure from Sarvam AI API. Response: {response}")
+            return None
+
+    except Exception as e:
+        print(f"An error occurred during translation: {e}")
+        return None
+
+def translate_english_to_malayalam(english_text: str) -> str | None:
+    """
+    Translates English text to Malayalam using the Sarvam AI Text Translation API.
+
+    The Sarvam AI API key is loaded from a .env file (SARVAM_API_KEY).
+    This function handles input texts longer than the API's character limit
+    by chunking them and reassembling the translation.
+
+    Args:
+        english_text: The input text in English to be translated.
+
+    Returns:
+        The translated text in Malayalam as a string, or None if an error occurs.
+    """
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Get the Sarvam AI API key from environment variables
+    sarvam_api_key = os.getenv("SARVAM_API_KEY")
+
+    if not sarvam_api_key:
+        print("Error: SARVAM_API_KEY not found in .env file or environment variables.")
+        return None
+
+    if not english_text.strip():
+        print("Warning: Input English text is empty. Returning empty string.")
+        return ""
+
+    try:
+        # Initialize the SarvamAI client with your API key
+        client = SarvamAI(api_subscription_key=sarvam_api_key)
+
+        # The Sarvam AI 'mayura:v1' model has a 1000 character limit.
+        # 'sarvam-translate:v1' supports up to 2000 characters.
+        # We'll use 1000 as a safe default for chunking.
+        MAX_CHAR_LIMIT = 1000
+        text_chunks = _chunk_text(english_text, MAX_CHAR_LIMIT)
+        
+        translated_chunks = []
+        for i, chunk in enumerate(text_chunks):
+            print(f"Translating English chunk {i+1}/{len(text_chunks)} (length: {len(chunk)})...")
+            response = client.text.translate(
+                input=chunk,
+                source_language_code="en-IN",
+                target_language_code="ml-IN",
+                # model="mayura:v1" # This model has a 1000 char limit.
+                # model="sarvam-translate:v1" # This model supports up to 2000 chars and all 22 Indic languages.
+                # If no model is specified, a default might be used, which could be mayura:v1.
+                # Consider explicitly setting 'model' if you have specific requirements or encounter issues.
+            )
+
+            if hasattr(response, 'translated_text'):
+                translated_chunks.append(response.translated_text)
+            else:
+                print(f"Error: Unexpected response structure from Sarvam AI API for chunk {i+1}. Response: {response}")
+                return None
+        
+        return " ".join(translated_chunks) # Join translated chunks with a space
+
+    except Exception as e:
+        print(f"An error occurred during translation: {e}")
+        return None
